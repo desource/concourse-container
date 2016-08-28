@@ -19,9 +19,8 @@ download() {
   chmod +x ${rootfs}/bin/concourse
 }
 
-build_rootfs() {
+build() {
   mkdir -p ${rootfs}/lib64 ${rootfs}/etc/ssl/certs
-    
   cp \
     ${glibc}/libc.so.* \
     ${glibc}/nptl/libpthread.so.* \
@@ -45,12 +44,11 @@ EOF
 root:x:0:
 nogroup:x:65534:
 EOF
-  
 }
 
 dockerfile() {
-  tar -cf ${out}/{rootfs}.tar -C ${rootfs} .
-    
+  tar -cf ${out}/rootfs.tar -C ${rootfs} .
+
   cat <<EOF > ${out}/tag
 ${version}
 EOF
@@ -58,7 +56,7 @@ EOF
   cat <<EOF > ${out}/Dockerfile
 FROM scratch
 
-ADD {rootfs}.tar /
+ADD rootfs.tar /
 
 ENV \
   PATH=/bin \
@@ -69,5 +67,5 @@ EOF
 }
 
 download
-build_rootfs
+build
 dockerfile
