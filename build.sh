@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # Download and create a rootfs for concourse container
 set -euo pipefail
@@ -10,8 +10,6 @@ declare -r src=${PWD}/container
 declare -r glibc=${PWD}/glibc
 declare -r rootfs=${PWD}/rootfs
 declare -r out=${PWD}/out
-
-mkdir ${out}
 
 download() {
   mkdir -p ${rootfs}/bin
