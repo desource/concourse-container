@@ -12,11 +12,11 @@ declare -r rootfs=${PWD}/rootfs
 declare -r out=${PWD}/out
 
 download() {
-  mkdir -p ${rootfs}/bin
+  mkdir -p ${rootfs}/opt/bin
   curl -L "https://github.com/concourse/concourse/releases/download/v${version}/concourse_linux_amd64" \
-       -o ${rootfs}/bin/concourse
-  echo "${sha256}  ${rootfs}/bin/concourse" | sha256sum -c
-  chmod +x ${rootfs}/bin/concourse
+       -o ${rootfs}/opt/bin/concourse
+  echo "${sha256}  ${rootfs}/opt/bin/concourse" | sha256sum -c
+  chmod +x ${rootfs}/opt/bin/concourse
 }
 
 build() {
@@ -59,10 +59,10 @@ FROM scratch
 ADD rootfs.tar /
 
 ENV \
-  PATH=/bin \
-  LD_LIBRARY_PATH=/lib
+  PATH=/opt/bin:/bin \
+  LD_LIBRARY_PATH=/lib64
 
-ENTRYPOINT [ "/bin/concourse" ]
+ENTRYPOINT [ "/opt/bin/concourse" ]
 EOF
 }
 
