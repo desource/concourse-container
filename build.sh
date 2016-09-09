@@ -3,8 +3,8 @@
 # Download and create a rootfs for concourse container
 set -euo pipefail
 
-declare -r version=2.0.2
-declare -r sha256=654cfce9fbf1bacfee08dd40ea292bbfb301c61b99f805792912ce1ef1b966e1
+declare -r version=2.1.0
+declare -r sha256=ee8f17cca506bcf7f40ed4c23823f98551a1d5e5961155d0c47785ff34978dde
 
 declare -r src=${PWD}/container
 declare -r glibc=${PWD}/glibc
