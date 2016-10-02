@@ -3,23 +3,21 @@
 # Download and create a rootfs for concourse container
 set -euo pipefail
 
-declare -r version=2.1.0
-declare -r sha256=ee8f17cca506bcf7f40ed4c23823f98551a1d5e5961155d0c47785ff34978dde
-
 declare -r src=${PWD}/container
 declare -r glibc=${PWD}/glibc
 declare -r rootfs=${PWD}/rootfs
 declare -r out=${PWD}/out
 
-download() {
+# _download "version" "sha256"
+_download() {
   mkdir -p ${rootfs}/opt/bin
-  curl -L "https://github.com/concourse/concourse/releases/download/v${version}/concourse_linux_amd64" \
+  curl -sS -L "https://github.com/concourse/concourse/releases/download/v${1}/concourse_linux_amd64" \
        -o ${rootfs}/opt/bin/concourse
-  echo "${sha256}  ${rootfs}/opt/bin/concourse" | sha256sum -c
+  echo "${2}  ${rootfs}/opt/bin/concourse" | sha256sum -c
   chmod +x ${rootfs}/opt/bin/concourse
 }
 
-build() {
+_build() {
   mkdir -p ${rootfs}/lib64 ${rootfs}/etc/ssl/certs
   cp \
     ${glibc}/libc.so.* \
@@ -46,11 +44,12 @@ nogroup:x:65534:
 EOF
 }
 
-dockerfile() {
+# _dockerfile "version"
+_dockerfile() {
   tar -cf ${out}/rootfs.tar -C ${rootfs} .
 
   cat <<EOF > ${out}/tag
-${version}
+${1}
 EOF
 
   cat <<EOF > ${out}/Dockerfile
@@ -66,6 +65,6 @@ ENTRYPOINT [ "/opt/bin/concourse" ]
 EOF
 }
 
-download
-build
-dockerfile
+_download 2.2.1 1166d6b7923d54e97e07f8980a2b6a30da39d6120762f2fde65b62691956b5ea
+_build
+_dockerfile 2.2.1
