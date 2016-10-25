@@ -65,6 +65,6 @@ ENTRYPOINT [ "/opt/bin/concourse" ]
 EOF
 }
 
-_download 2.2.1 1166d6b7923d54e97e07f8980a2b6a30da39d6120762f2fde65b62691956b5ea
+_download 2.3.1 b35e7296dc28b1ce0fee408e85ee75cb35b80b98c6897d21d799f66cd992f137 
 _build
-_dockerfile 2.2.1
+_dockerfile 2.3.1
