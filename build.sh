@@ -8,6 +8,39 @@ declare -r glibc=${PWD}/glibc
 declare -r rootfs=${PWD}/rootfs
 declare -r out=${PWD}/out
 
+declare -r iptables=${PWD}/iptables
+
+_init() {
+    dnf install -y \
+        bzip2 \
+        libuuid-devel \
+        libattr-devel \
+        zlib-devel \
+        libacl-devel \
+        e2fsprogs-devel \
+        libblkid-devel \
+        lzo-devel \
+        asciidoc \
+        xmlto \
+        glibc-static
+}
+
+_iptables() {
+    curl -sS -L "http://www.netfilter.org/projects/iptables/files/iptables-1.4.21.tar.bz2"
+}
+
+_lzo2() {
+  curl -OL http://www.oberhumer.com/opensource/lzo/download/lzo-2.09.tar.gz
+}
+
+_btrfs() {
+  curl https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v4.4.tar.gz
+}
+
+_libseccomp() {
+  curl -L https://github.com/seccomp/libseccomp/releases/download/v2.3.1/libseccomp-2.3.1.tar.gz
+}
+
 # _download "version" "sha256"
 _download() {
   mkdir -p ${rootfs}/opt/bin
@@ -65,6 +98,6 @@ ENTRYPOINT [ "/opt/bin/concourse" ]
 EOF
 }
 
-_download 2.3.1 b35e7296dc28b1ce0fee408e85ee75cb35b80b98c6897d21d799f66cd992f137 
+_download 2.4.0 834fdcaab9aa2e7c5a186d301975a8916bbaa3e179d25ad1033ade86cd43dd13
 _build
-_dockerfile 2.3.1
+_dockerfile 2.4.0
